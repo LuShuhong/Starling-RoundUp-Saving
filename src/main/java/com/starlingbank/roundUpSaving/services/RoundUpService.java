@@ -5,10 +5,4 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class RoundUpService {
-
-    public RoundUpResponse executeRoundUp() {
-        RoundUpResponse roundUpResponse = new RoundUpResponse();
-
-        return roundUpResponse;
-    }
 }
