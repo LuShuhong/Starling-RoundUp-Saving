@@ -13,7 +13,6 @@ public class AccountService {
 
     @Value("${starling.sandbox.host}")
     private String baseUrl;
-
     private final RestTemplate restTemplate;
     private final HeaderConfig headerConfig;
 
@@ -26,6 +25,5 @@ public ResponseEntity<AccountsList> getAccountsList() {
     HttpEntity<Void> httpEntity = new HttpEntity<>(headerConfig.constructHeader());
     return restTemplate.exchange(baseUrl + "/api/v2/accounts", HttpMethod.GET, httpEntity, AccountsList.class);
 }
-
 
 }

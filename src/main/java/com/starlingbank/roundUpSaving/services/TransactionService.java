@@ -10,8 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
@@ -25,13 +23,13 @@ public class TransactionService {
     private final HeaderConfig headerConfig;
     private final Account account;
 
-
-    public TransactionService(RestTemplate restTemplate, HeaderConfig headerConfig, Account account) {
+    public TransactionService(RestTemplate restTemplate,
+                              HeaderConfig headerConfig,
+                              Account account) {
         this.restTemplate = restTemplate;
         this.headerConfig = headerConfig;
         this.account = account;
     }
-
 
     public ResponseEntity<FeedItemsList> getWeeklyTransactions() {
         String accountUid = account.accountUid();
@@ -39,7 +37,11 @@ public class TransactionService {
         Instant aWeekAgo = Instant.now().minus(Duration.ofDays(7));
         String isoDate = DateTimeFormatter.ISO_INSTANT.format(aWeekAgo);
         HttpEntity<Void> httpEntity = new HttpEntity<>(headerConfig.constructHeader());
-        String endpoint = String.format("%s/api/v2/feed/account/%s/category/%s?changesSince=%s", baseUrl, accountUid, categoryUid, isoDate);
+        String endpoint = String.format("%s/api/v2/feed/account/%s/category/%s?changesSince=%s",
+                baseUrl,
+                accountUid,
+                categoryUid,
+                isoDate);
         return restTemplate.exchange(endpoint, HttpMethod.GET, httpEntity, FeedItemsList.class);
     }
 
