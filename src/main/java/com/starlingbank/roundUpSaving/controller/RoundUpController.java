@@ -1,9 +1,6 @@
 package com.starlingbank.roundUpSaving.controller;
 
-import com.starlingbank.roundUpSaving.model.AccountsList;
-import com.starlingbank.roundUpSaving.model.CreateSavingGoalResponse;
-import com.starlingbank.roundUpSaving.model.FeedItemsList;
-import com.starlingbank.roundUpSaving.model.SavingGoalsRequest;
+import com.starlingbank.roundUpSaving.model.*;
 import com.starlingbank.roundUpSaving.services.AccountService;
 import com.starlingbank.roundUpSaving.services.SavingsGoalService;
 import com.starlingbank.roundUpSaving.services.TransactionService;
@@ -32,6 +29,12 @@ public class RoundUpController {
     public ResponseEntity<FeedItemsList> getFeedItemsList() {
         return transactionService.getWeeklyTransactions();
     }
+
+    @GetMapping("/all-saving-goals")
+    public ResponseEntity<GetSavingsGoalsResponse> getAllSavingsGoals() {
+        return savingsGoalService.getAllSavingGoals();
+    }
+
 
     @PutMapping("/create-saving-goals")
     public ResponseEntity<CreateSavingGoalResponse> createSavingGoals(@RequestBody final SavingGoalsRequest savingGoalsRequest) {

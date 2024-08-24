@@ -1,10 +1,7 @@
 package com.starlingbank.roundUpSaving.services;
 
 import com.starlingbank.roundUpSaving.config.HeaderConfig;
-import com.starlingbank.roundUpSaving.model.Account;
-import com.starlingbank.roundUpSaving.model.Amount;
-import com.starlingbank.roundUpSaving.model.CreateSavingGoalResponse;
-import com.starlingbank.roundUpSaving.model.SavingGoalsRequest;
+import com.starlingbank.roundUpSaving.model.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -40,7 +37,14 @@ public class SavingsGoalService {
                 CreateSavingGoalResponse.class);
     }
 
-    public SavingGoalsRequest buildSavingGoalRequest(SavingGoalsRequest savingGoalsRequest) {
+    public ResponseEntity<GetSavingsGoalsResponse> getAllSavingGoals() {
+        accountUid = account.accountUid();
+        HttpEntity<Void> httpEntity = new HttpEntity<>(headerConfig.constructHeader());
+        String endpoint = baseUrl + "/api/v2/account/" + accountUid+ "/savings-goals";
+        return restTemplate.exchange(endpoint, HttpMethod.GET, httpEntity, GetSavingsGoalsResponse.class);
+    }
+
+    private SavingGoalsRequest buildSavingGoalRequest(SavingGoalsRequest savingGoalsRequest) {
         return SavingGoalsRequest.builder()
                 .name(savingGoalsRequest.getName())
                 .currency(savingGoalsRequest.getCurrency())
@@ -48,6 +52,8 @@ public class SavingsGoalService {
                         savingGoalsRequest.getTarget().minorUnits()))
                 .build();
     }
+
+
 
 
 }
