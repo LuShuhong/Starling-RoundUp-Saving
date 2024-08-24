@@ -6,7 +6,6 @@ import com.starlingbank.roundUpSaving.model.FeedItemsList;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -31,7 +30,7 @@ public class TransactionService {
         this.account = account;
     }
 
-    public ResponseEntity<FeedItemsList> getWeeklyTransactions() {
+    public FeedItemsList getWeeklyTransactions() {
         String accountUid = account.accountUid();
         String categoryUid = account.defaultCategory();
         Instant aWeekAgo = Instant.now().minus(Duration.ofDays(7));
@@ -42,7 +41,7 @@ public class TransactionService {
                 accountUid,
                 categoryUid,
                 isoDate);
-        return restTemplate.exchange(endpoint, HttpMethod.GET, httpEntity, FeedItemsList.class);
+        return restTemplate.exchange(endpoint, HttpMethod.GET, httpEntity, FeedItemsList.class).getBody();
     }
 
 }

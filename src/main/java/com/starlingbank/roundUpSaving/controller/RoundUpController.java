@@ -27,21 +27,21 @@ public class RoundUpController {
 
     @GetMapping("/transactions")
     public ResponseEntity<FeedItemsList> getFeedItemsList() {
-        return transactionService.getWeeklyTransactions();
+        return ResponseEntity.ok(transactionService.getWeeklyTransactions());
     }
 
     @GetMapping("/saving-goals")
     public ResponseEntity<GetSavingsGoalsResponse> getAllSavingsGoals() {
-        return savingsGoalService.getAllSavingGoals();
+        return ResponseEntity.ok(savingsGoalService.getAllSavingGoals());
     }
 
     @GetMapping("/saving-goals/{id}")
     public ResponseEntity<SavingsGoal> getSavingsGoalByUid(@PathVariable("id") String uid) {
-        return savingsGoalService.getSavingsGoalByUid(uid);
+        return ResponseEntity.ok(savingsGoalService.getSavingsGoalByUid(uid));
     }
 
     @PutMapping("/create-saving-goals")
     public ResponseEntity<CreateSavingGoalResponse> createSavingGoals(@RequestBody final SavingGoalsRequest savingGoalsRequest) {
-        return savingsGoalService.createSavingGoal(savingGoalsRequest);
+        return ResponseEntity.ok(savingsGoalService.createSavingGoal(savingGoalsRequest));
     }
 }

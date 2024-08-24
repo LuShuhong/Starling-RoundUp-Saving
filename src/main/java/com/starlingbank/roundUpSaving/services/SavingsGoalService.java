@@ -26,7 +26,7 @@ public class SavingsGoalService {
         this.account = account;
     }
 
-    public ResponseEntity<CreateSavingGoalResponse> createSavingGoal(SavingGoalsRequest savingGoalsRequest) {
+    public CreateSavingGoalResponse createSavingGoal(SavingGoalsRequest savingGoalsRequest) {
         accountUid = account.accountUid();
         SavingGoalsRequest requestBody = buildSavingGoalRequest(savingGoalsRequest);
         HttpEntity<SavingGoalsRequest> httpEntity = new HttpEntity<>(requestBody, headerConfig.constructHeader());
@@ -34,21 +34,22 @@ public class SavingsGoalService {
         return restTemplate.exchange(endpoint,
                 HttpMethod.PUT,
                 httpEntity,
-                CreateSavingGoalResponse.class);
+                CreateSavingGoalResponse.class)
+                .getBody();
     }
 
-    public ResponseEntity<GetSavingsGoalsResponse> getAllSavingGoals() {
+    public GetSavingsGoalsResponse getAllSavingGoals() {
         accountUid = account.accountUid();
         HttpEntity<Void> httpEntity = new HttpEntity<>(headerConfig.constructHeader());
         String endpoint = baseUrl + "/api/v2/account/" + accountUid+ "/savings-goals";
-        return restTemplate.exchange(endpoint, HttpMethod.GET, httpEntity, GetSavingsGoalsResponse.class);
+        return restTemplate.exchange(endpoint, HttpMethod.GET, httpEntity, GetSavingsGoalsResponse.class).getBody();
     }
 
-    public ResponseEntity<SavingsGoal> getSavingsGoalByUid(String savingsGoalUid) {
+    public SavingsGoal getSavingsGoalByUid(String savingsGoalUid) {
         accountUid = account.accountUid();
         HttpEntity<Void> httpEntity = new HttpEntity<>(headerConfig.constructHeader());
         String endpoint = baseUrl + "/api/v2/account/" + accountUid + "/savings-goals/" + savingsGoalUid;
-        return restTemplate.exchange(endpoint, HttpMethod.GET, httpEntity, SavingsGoal.class);
+        return restTemplate.exchange(endpoint, HttpMethod.GET, httpEntity, SavingsGoal.class).getBody();
     }
 
     private SavingGoalsRequest buildSavingGoalRequest(SavingGoalsRequest savingGoalsRequest) {
