@@ -30,11 +30,15 @@ public class RoundUpController {
         return transactionService.getWeeklyTransactions();
     }
 
-    @GetMapping("/all-saving-goals")
+    @GetMapping("/saving-goals")
     public ResponseEntity<GetSavingsGoalsResponse> getAllSavingsGoals() {
         return savingsGoalService.getAllSavingGoals();
     }
 
+    @GetMapping("/saving-goals/{id}")
+    public ResponseEntity<SavingsGoal> getSavingsGoalByUid(@PathVariable("id") String uid) {
+        return savingsGoalService.getSavingsGoalByUid(uid);
+    }
 
     @PutMapping("/create-saving-goals")
     public ResponseEntity<CreateSavingGoalResponse> createSavingGoals(@RequestBody final SavingGoalsRequest savingGoalsRequest) {
