@@ -1,4 +1,6 @@
-package com.starlingbank.roundUpSaving.model;
+package com.starlingbank.roundUpSaving.model.savingsgoals;
+
+import com.starlingbank.roundUpSaving.model.Amount;
 
 public record SavingsGoal(String savingsGoalUid,
                           String name,

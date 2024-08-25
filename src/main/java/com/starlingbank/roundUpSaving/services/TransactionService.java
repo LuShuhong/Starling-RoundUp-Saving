@@ -1,9 +1,9 @@
 package com.starlingbank.roundUpSaving.services;
 
 import com.starlingbank.roundUpSaving.config.HeaderConfig;
-import com.starlingbank.roundUpSaving.model.Account;
-import com.starlingbank.roundUpSaving.model.FeedItem;
-import com.starlingbank.roundUpSaving.model.FeedItemsList;
+import com.starlingbank.roundUpSaving.model.account.Account;
+import com.starlingbank.roundUpSaving.model.transactions.FeedItem;
+import com.starlingbank.roundUpSaving.model.transactions.FeedItemsList;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
