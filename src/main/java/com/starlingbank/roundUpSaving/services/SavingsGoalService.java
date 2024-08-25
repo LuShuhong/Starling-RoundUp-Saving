@@ -68,6 +68,4 @@ public class SavingsGoalService {
                         httpEntity,
                         SavingsGoalTransferResponse.class).getBody();
     }
-
-
 }
