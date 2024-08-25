@@ -30,18 +30,24 @@ public class RoundUpController {
         return ResponseEntity.ok(transactionService.getWeeklyTransactions());
     }
 
-    @GetMapping("/saving-goals")
+    @GetMapping("/savings-goals")
     public ResponseEntity<GetSavingsGoalsResponse> getAllSavingsGoals() {
         return ResponseEntity.ok(savingsGoalService.getAllSavingGoals());
     }
 
-    @GetMapping("/saving-goals/{id}")
+    @GetMapping("/savings-goals/{id}")
     public ResponseEntity<SavingsGoal> getSavingsGoalByUid(@PathVariable("id") String uid) {
         return ResponseEntity.ok(savingsGoalService.getSavingsGoalByUid(uid));
     }
 
     @PutMapping("/create-saving-goals")
-    public ResponseEntity<CreateSavingGoalResponse> createSavingGoals(@RequestBody final SavingGoalsRequest savingGoalsRequest) {
+    public ResponseEntity<CreateSavingGoalResponse> createSavingGoals(@RequestBody SavingGoalsRequest savingGoalsRequest) {
         return ResponseEntity.ok(savingsGoalService.createSavingGoal(savingGoalsRequest));
+    }
+
+    @PutMapping("/transfer-money")
+    public ResponseEntity<SavingsGoalTransferResponse> transfer(@RequestBody SavingsGoalTransferRequest savingsGoalTransferRequest,
+                                                                @RequestParam String savingsGoalUid) {
+        return ResponseEntity.ok(savingsGoalService.transferToSavingsGoal(savingsGoalTransferRequest, savingsGoalUid));
     }
 }

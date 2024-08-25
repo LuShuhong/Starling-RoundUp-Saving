@@ -5,9 +5,10 @@ import com.starlingbank.roundUpSaving.model.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.UUID;
 
 @Service
 public class SavingsGoalService {
@@ -16,7 +17,6 @@ public class SavingsGoalService {
     private final RestTemplate restTemplate;
     private final HeaderConfig headerConfig;
     private final Account account;
-    private String accountUid;
 
     public SavingsGoalService(RestTemplate restTemplate,
                               HeaderConfig headerConfig,
@@ -27,41 +27,47 @@ public class SavingsGoalService {
     }
 
     public CreateSavingGoalResponse createSavingGoal(SavingGoalsRequest savingGoalsRequest) {
-        accountUid = account.accountUid();
-        SavingGoalsRequest requestBody = buildSavingGoalRequest(savingGoalsRequest);
-        HttpEntity<SavingGoalsRequest> httpEntity = new HttpEntity<>(requestBody, headerConfig.constructHeader());
+        String accountUid = account.accountUid();
+        HttpEntity<SavingGoalsRequest> httpEntity = new HttpEntity<>(savingGoalsRequest, headerConfig.constructHeader());
         String endpoint = String.format("%s/api/v2/account/%s/savings-goals", baseUrl, accountUid);
         return restTemplate.exchange(endpoint,
                 HttpMethod.PUT,
                 httpEntity,
-                CreateSavingGoalResponse.class)
-                .getBody();
+                CreateSavingGoalResponse.class).getBody();
     }
 
     public GetSavingsGoalsResponse getAllSavingGoals() {
-        accountUid = account.accountUid();
+        String accountUid = account.accountUid();
         HttpEntity<Void> httpEntity = new HttpEntity<>(headerConfig.constructHeader());
         String endpoint = baseUrl + "/api/v2/account/" + accountUid+ "/savings-goals";
         return restTemplate.exchange(endpoint, HttpMethod.GET, httpEntity, GetSavingsGoalsResponse.class).getBody();
     }
 
     public SavingsGoal getSavingsGoalByUid(String savingsGoalUid) {
-        accountUid = account.accountUid();
+        String accountUid = account.accountUid();
         HttpEntity<Void> httpEntity = new HttpEntity<>(headerConfig.constructHeader());
         String endpoint = baseUrl + "/api/v2/account/" + accountUid + "/savings-goals/" + savingsGoalUid;
         return restTemplate.exchange(endpoint, HttpMethod.GET, httpEntity, SavingsGoal.class).getBody();
     }
 
-    private SavingGoalsRequest buildSavingGoalRequest(SavingGoalsRequest savingGoalsRequest) {
-        return SavingGoalsRequest.builder()
-                .name(savingGoalsRequest.getName())
-                .currency(savingGoalsRequest.getCurrency())
-                .target(new Amount(savingGoalsRequest.getTarget().currency(),
-                        savingGoalsRequest.getTarget().minorUnits()))
-                .build();
+    public SavingsGoal getDefaultSavingsAccount() {
+        return getAllSavingGoals().savingsGoalList().get(0);
     }
 
-
+    public SavingsGoalTransferResponse transferToSavingsGoal(SavingsGoalTransferRequest request, String savingsGoalUid) {
+        String accountUid = account.accountUid();
+        String uuid = UUID.randomUUID().toString();
+        HttpEntity<SavingsGoalTransferRequest> httpEntity = new HttpEntity<>(request, headerConfig.constructHeader());
+        String endpoint = String.format("%s/api/v2/account/%s/savings-goals/%s/add-money/%s",
+                baseUrl,
+                accountUid,
+                savingsGoalUid,
+                uuid);
+        return restTemplate.exchange(endpoint,
+                        HttpMethod.PUT,
+                        httpEntity,
+                        SavingsGoalTransferResponse.class).getBody();
+    }
 
 
 }
