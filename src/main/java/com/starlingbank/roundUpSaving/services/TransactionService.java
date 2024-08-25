@@ -46,7 +46,10 @@ public class TransactionService {
         int total = 0;
         for(FeedItem transaction : feedItemsList.feedItems()) {
            if(transaction.direction().equals("OUT")) {
-               total += transaction.amount().minorUnits();
+               int minorUnits = transaction.amount().minorUnits();
+               int remainder = minorUnits % 100;
+               int roundUpAmount = (remainder == 0) ? 0 : 100 -remainder;
+               total += roundUpAmount;
            }
        }
        return total;
