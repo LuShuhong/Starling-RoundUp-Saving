@@ -5,7 +5,6 @@ import com.starlingbank.roundUpSaving.model.Account;
 import com.starlingbank.roundUpSaving.model.FeedItem;
 import com.starlingbank.roundUpSaving.model.FeedItemsList;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.pulsar.PulsarProperties;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
