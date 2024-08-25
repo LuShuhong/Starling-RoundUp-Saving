@@ -2,8 +2,10 @@ package com.starlingbank.roundUpSaving.services;
 
 import com.starlingbank.roundUpSaving.config.HeaderConfig;
 import com.starlingbank.roundUpSaving.model.Account;
+import com.starlingbank.roundUpSaving.model.FeedItem;
 import com.starlingbank.roundUpSaving.model.FeedItemsList;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.pulsar.PulsarProperties;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
@@ -44,4 +46,13 @@ public class TransactionService {
         return restTemplate.exchange(endpoint, HttpMethod.GET, httpEntity, FeedItemsList.class).getBody();
     }
 
+    public int getTotalRoundUpFromTransactions(FeedItemsList feedItemsList) {
+        int total = 0;
+        for(FeedItem transaction : feedItemsList.feedItems()) {
+           if(transaction.direction().equals("OUT")) {
+               total += transaction.amount().minorUnits();
+           }
+       }
+       return total;
+    }
 }

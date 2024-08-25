@@ -26,7 +26,7 @@ public class SavingsGoalService {
         this.account = account;
     }
 
-    public CreateSavingGoalResponse createSavingGoal(SavingGoalsRequest savingGoalsRequest) {
+    public CreateSavingGoalResponse createNewSavingGoal(SavingGoalsRequest savingGoalsRequest) {
         String accountUid = account.accountUid();
         HttpEntity<SavingGoalsRequest> httpEntity = new HttpEntity<>(savingGoalsRequest, headerConfig.constructHeader());
         String endpoint = String.format("%s/api/v2/account/%s/savings-goals", baseUrl, accountUid);
@@ -50,7 +50,7 @@ public class SavingsGoalService {
         return restTemplate.exchange(endpoint, HttpMethod.GET, httpEntity, SavingsGoal.class).getBody();
     }
 
-    public SavingsGoal getDefaultSavingsAccount() {
+    public SavingsGoal getDefaultSavingsGoal() {
         return getAllSavingGoals().savingsGoalList().get(0);
     }
 
