@@ -21,6 +21,4 @@ public class HeaderConfig {
 
         return httpHeaders;
     }
-
-
 }
