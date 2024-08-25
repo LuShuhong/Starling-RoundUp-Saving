@@ -19,8 +19,8 @@ public class RoundUpController {
         this.roundUpService = roundUpService;
     }
 
-    @GetMapping("/save-my-weekly-round-up")
-    public ResponseEntity<SavingsGoalTransferResponse> saveRoundUp() {
+    @PutMapping("/save-my-weekly-round-up")
+    public ResponseEntity<SavingsGoalTransferResponse> saveWeeklyRoundUp() {
         Account account = accountService.getDefaultAccount();
         return ResponseEntity.ok(roundUpService.executeRoundUp(account));
     }

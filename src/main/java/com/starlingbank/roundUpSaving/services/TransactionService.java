@@ -1,19 +1,24 @@
 package com.starlingbank.roundUpSaving.services;
 
 import com.starlingbank.roundUpSaving.config.HeaderConfig;
+import com.starlingbank.roundUpSaving.exceptions.TransactionsRetrievalException;
 import com.starlingbank.roundUpSaving.model.account.Account;
 import com.starlingbank.roundUpSaving.model.transactions.FeedItem;
 import com.starlingbank.roundUpSaving.model.transactions.FeedItemsList;
+import com.starlingbank.roundUpSaving.model.transactions.TransactionDirection;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.Duration;
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
 
+@Slf4j
 @Service
 public class TransactionService {
 
@@ -39,19 +44,29 @@ public class TransactionService {
                 accountUid,
                 categoryUid,
                 isoDate);
-        return restTemplate.exchange(endpoint, HttpMethod.GET, httpEntity, FeedItemsList.class).getBody();
+        try {
+            return restTemplate.exchange(endpoint, HttpMethod.GET, httpEntity, FeedItemsList.class).getBody();
+        } catch (RestClientException e) {
+            log.error("Failed to retrieve transactions for accountUid: {}, categoryUid: {}. Endpoint: {}. Error: {}",
+                    accountUid, categoryUid, endpoint, e.getMessage(), e);
+            throw new TransactionsRetrievalException("Error fetching weekly transactions from Starling API", e);
+        }
     }
 
     public int getTotalRoundUpFromTransactions(FeedItemsList feedItemsList) {
-        int total = 0;
-        for(FeedItem transaction : feedItemsList.feedItems()) {
-           if(transaction.direction().equals("OUT")) {
-               int minorUnits = transaction.amount().minorUnits();
-               int remainder = minorUnits % 100;
-               int roundUpAmount = (remainder == 0) ? 0 : 100 -remainder;
-               total += roundUpAmount;
-           }
-       }
-       return total;
+        return feedItemsList.feedItems().stream()
+                .filter(this::isOutgoingTransaction)
+                .mapToInt(this::calculateRoundUp)
+                .sum();
+    }
+
+    private boolean isOutgoingTransaction(FeedItem transaction) {
+        return transaction.direction().equals(TransactionDirection.OUT.name());
+    }
+
+    private int calculateRoundUp(FeedItem transaction) {
+        int minorUnits = transaction.amount().minorUnits();
+        int remainder = minorUnits % 100;
+        return (remainder == 0) ? 0 : 100 - remainder;
     }
 }
