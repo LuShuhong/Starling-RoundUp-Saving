@@ -1,7 +1,6 @@
 package com.starlingbank.roundUpSaving.services;
 
 import com.starlingbank.roundUpSaving.config.HeaderConfig;
-import com.starlingbank.roundUpSaving.exceptions.AccountRetrievalException;
 import com.starlingbank.roundUpSaving.model.account.Account;
 import com.starlingbank.roundUpSaving.model.account.AccountsList;
 import lombok.extern.slf4j.Slf4j;
@@ -34,7 +33,7 @@ public class AccountService {
             return restTemplate.exchange(baseUrl + "/api/v2/accounts", HttpMethod.GET, httpEntity, AccountsList.class);
         } catch (RestClientException e) {
             log.error("Failed to retrieve accounts", e);
-            throw new AccountRetrievalException("Failed to retrieve accounts", e);
+            throw e;
         }
     }
 

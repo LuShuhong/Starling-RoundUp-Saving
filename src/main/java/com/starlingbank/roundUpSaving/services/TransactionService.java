@@ -1,7 +1,6 @@
 package com.starlingbank.roundUpSaving.services;
 
 import com.starlingbank.roundUpSaving.config.HeaderConfig;
-import com.starlingbank.roundUpSaving.exceptions.TransactionsRetrievalException;
 import com.starlingbank.roundUpSaving.model.account.Account;
 import com.starlingbank.roundUpSaving.model.transactions.FeedItem;
 import com.starlingbank.roundUpSaving.model.transactions.FeedItemsList;
@@ -49,7 +48,7 @@ public class TransactionService {
         } catch (RestClientException e) {
             log.error("Failed to retrieve transactions for accountUid: {}, categoryUid: {}. Endpoint: {}. Error: {}",
                     accountUid, categoryUid, endpoint, e.getMessage(), e);
-            throw new TransactionsRetrievalException("Error fetching weekly transactions from Starling API", e);
+            throw e;
         }
     }
 
