@@ -13,15 +13,15 @@ public class RoundUpService {
         this.savingsGoalService = savingsGoalService;
     }
 
-    public SavingsGoalTransferResponse executeRoundUp() {
-        FeedItemsList transactions = transactionService.getWeeklyTransactions();
+    public SavingsGoalTransferResponse executeRoundUp(Account account) {
+        FeedItemsList transactions = transactionService.getWeeklyTransactions(account);
         int totalRoundUp = transactionService.getTotalRoundUpFromTransactions(transactions);
-        String savingsGoalUid = savingsGoalService.getDefaultSavingsGoal().savingsGoalUid();
+        String savingsGoalUid = savingsGoalService.getDefaultSavingsGoal(account).savingsGoalUid();
         SavingsGoalTransferRequest request = SavingsGoalTransferRequest.builder()
                 .amount(new Amount("GBP", totalRoundUp))
                 .build();
 
-        return savingsGoalService.transferToSavingsGoal(request, savingsGoalUid);
+        return savingsGoalService.transferToSavingsGoal(account, request, savingsGoalUid);
     }
 
 }

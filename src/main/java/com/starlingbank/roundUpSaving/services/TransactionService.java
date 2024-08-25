@@ -21,17 +21,14 @@ public class TransactionService {
     private String baseUrl;
     private final RestTemplate restTemplate;
     private final HeaderConfig headerConfig;
-    private final Account account;
 
     public TransactionService(RestTemplate restTemplate,
-                              HeaderConfig headerConfig,
-                              Account account) {
+                              HeaderConfig headerConfig) {
         this.restTemplate = restTemplate;
         this.headerConfig = headerConfig;
-        this.account = account;
     }
 
-    public FeedItemsList getWeeklyTransactions() {
+    public FeedItemsList getWeeklyTransactions(Account account) {
         String accountUid = account.accountUid();
         String categoryUid = account.defaultCategory();
         Instant aWeekAgo = Instant.now().minus(Duration.ofDays(7));

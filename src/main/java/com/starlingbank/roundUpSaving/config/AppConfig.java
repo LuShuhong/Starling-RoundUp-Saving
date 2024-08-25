@@ -14,11 +14,4 @@ public class AppConfig {
     public RestTemplate restTemplate() {
         return new RestTemplate();
     }
-
-    @Bean
-    public Account account(AccountService accountService) {
-        return Objects.requireNonNull(accountService.getAccountsList().getBody())
-                .accounts()
-                .get(0);
-    }
 }
