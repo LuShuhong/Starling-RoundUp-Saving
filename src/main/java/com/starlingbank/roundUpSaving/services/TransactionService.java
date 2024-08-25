@@ -1,10 +1,11 @@
 package com.starlingbank.roundUpSaving.services;
 
-import com.starlingbank.roundUpSaving.config.HeaderConfig;
-import com.starlingbank.roundUpSaving.model.account.Account;
-import com.starlingbank.roundUpSaving.model.transactions.FeedItem;
-import com.starlingbank.roundUpSaving.model.transactions.FeedItemsList;
-import com.starlingbank.roundUpSaving.model.transactions.TransactionDirection;
+import com.starlingbank.roundUpSaving.configs.HeaderConfig;
+import com.starlingbank.roundUpSaving.models.account.Account;
+import com.starlingbank.roundUpSaving.models.transactions.FeedItem;
+import com.starlingbank.roundUpSaving.models.transactions.FeedItemsList;
+import com.starlingbank.roundUpSaving.models.transactions.TransactionDirection;
+import com.starlingbank.roundUpSaving.utils.UrlBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -25,11 +26,13 @@ public class TransactionService {
     private String baseUrl;
     private final RestTemplate restTemplate;
     private final HeaderConfig headerConfig;
+    private final UrlBuilder urlBuilder;
 
     public TransactionService(RestTemplate restTemplate,
-                              HeaderConfig headerConfig) {
+                              HeaderConfig headerConfig, UrlBuilder urlBuilder) {
         this.restTemplate = restTemplate;
         this.headerConfig = headerConfig;
+        this.urlBuilder = urlBuilder;
     }
 
     public FeedItemsList getWeeklyTransactions(Account account) {
@@ -38,16 +41,19 @@ public class TransactionService {
         Instant aWeekAgo = Instant.now().minus(Duration.ofDays(7));
         String isoDate = DateTimeFormatter.ISO_INSTANT.format(aWeekAgo);
         HttpEntity<Void> httpEntity = new HttpEntity<>(headerConfig.constructHeader());
-        String endpoint = String.format("%s/api/v2/feed/account/%s/category/%s?changesSince=%s",
-                baseUrl,
+
+        String url = urlBuilder.buildUrl("feed",
+                "account",
                 accountUid,
-                categoryUid,
-                isoDate);
+                "category",
+                categoryUid);
+        String urlWithParam = urlBuilder.buildParam(url, "changesSince", isoDate);
+
         try {
-            return restTemplate.exchange(endpoint, HttpMethod.GET, httpEntity, FeedItemsList.class).getBody();
+            return restTemplate.exchange(urlWithParam, HttpMethod.GET, httpEntity, FeedItemsList.class).getBody();
         } catch (RestClientException e) {
             log.error("Failed to retrieve transactions for accountUid: {}, categoryUid: {}. Endpoint: {}. Error: {}",
-                    accountUid, categoryUid, endpoint, e.getMessage(), e);
+                    accountUid, categoryUid, urlWithParam, e.getMessage(), e);
             throw e;
         }
     }

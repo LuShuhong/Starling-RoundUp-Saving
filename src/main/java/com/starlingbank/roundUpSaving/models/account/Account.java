@@ -1,4 +1,4 @@
-package com.starlingbank.roundUpSaving.model.account;
+package com.starlingbank.roundUpSaving.models.account;
 
 public record Account(String accountUid,
                       String accountType,

@@ -1,6 +1,6 @@
-package com.starlingbank.roundUpSaving.model.savingsgoals;
+package com.starlingbank.roundUpSaving.models.savingsgoals;
 
-import com.starlingbank.roundUpSaving.model.Amount;
+import com.starlingbank.roundUpSaving.models.Amount;
 import lombok.*;
 
 @Data

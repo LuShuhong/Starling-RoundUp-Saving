@@ -1,4 +1,4 @@
-package com.starlingbank.roundUpSaving.model;
+package com.starlingbank.roundUpSaving.models;
 
 public record Amount(String currency, int minorUnits ) {
 }

@@ -1,7 +1,7 @@
 package com.starlingbank.roundUpSaving.controller;
 
-import com.starlingbank.roundUpSaving.model.account.Account;
-import com.starlingbank.roundUpSaving.model.savingsgoals.SavingsGoalTransferResponse;
+import com.starlingbank.roundUpSaving.models.account.Account;
+import com.starlingbank.roundUpSaving.models.savingsgoals.SavingsGoalTransferResponse;
 import com.starlingbank.roundUpSaving.services.AccountService;
 import com.starlingbank.roundUpSaving.services.RoundUpService;
 import org.springframework.http.ResponseEntity;

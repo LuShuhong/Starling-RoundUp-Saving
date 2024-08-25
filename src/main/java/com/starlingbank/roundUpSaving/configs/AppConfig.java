@@ -1,4 +1,4 @@
-package com.starlingbank.roundUpSaving.config;
+package com.starlingbank.roundUpSaving.configs;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,10 +1,10 @@
 package com.starlingbank.roundUpSaving.services;
 
-import com.starlingbank.roundUpSaving.model.*;
-import com.starlingbank.roundUpSaving.model.account.Account;
-import com.starlingbank.roundUpSaving.model.savingsgoals.SavingsGoalTransferRequest;
-import com.starlingbank.roundUpSaving.model.savingsgoals.SavingsGoalTransferResponse;
-import com.starlingbank.roundUpSaving.model.transactions.FeedItemsList;
+import com.starlingbank.roundUpSaving.models.*;
+import com.starlingbank.roundUpSaving.models.account.Account;
+import com.starlingbank.roundUpSaving.models.savingsgoals.SavingsGoalTransferRequest;
+import com.starlingbank.roundUpSaving.models.savingsgoals.SavingsGoalTransferResponse;
+import com.starlingbank.roundUpSaving.models.transactions.FeedItemsList;
 import org.springframework.stereotype.Service;
 
 @Service
