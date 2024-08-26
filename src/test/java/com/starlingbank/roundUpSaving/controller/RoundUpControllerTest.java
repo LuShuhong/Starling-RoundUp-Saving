@@ -32,7 +32,7 @@ class RoundUpControllerTest {
     @Test
     public void testSaveWeeklyRoundUp() throws Exception {
         //Arrange
-        Account mockAccount = new Account("accUid", "type", "category", "GBP", "now", "name");
+        Account mockAccount = new Account("I", "really", "love", "startling", "bank", "truly");
         SavingsGoalTransferResponse mockResponse = new SavingsGoalTransferResponse("transferUid", true);
 
         when(accountService.getDefaultAccount()).thenReturn(mockAccount);

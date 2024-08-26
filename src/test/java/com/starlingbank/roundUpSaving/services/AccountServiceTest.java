@@ -12,7 +12,6 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
@@ -48,7 +47,7 @@ class AccountServiceTest {
 
         mockUrl = "I-love-starling-bank-and-this-challenge-is-interesting";
         mockHeaders = new HttpHeaders();
-        mockAccount = new Account("accUid", "type", "category", "GBP", "now", "name");
+        mockAccount =  new Account("I", "really", "love", "startling", "bank", "truly");
         mockAccountsList = new AccountsList(List.of(mockAccount));
         mockResponseEntity = ResponseEntity.ok(mockAccountsList);
         when(accountService.getAccountsList()).thenReturn(mockResponseEntity);
@@ -72,7 +71,7 @@ class AccountServiceTest {
         when(headerConfig.constructHeader()).thenReturn(mockHeaders);
         ResponseEntity<AccountsList> mockResponseEntity = ResponseEntity.ok(null);
 
-        when(restTemplate.exchange(eq(mockUrl), eq(HttpMethod.GET), any(HttpEntity.class), eq(AccountsList.class)))
+        when(restTemplate.exchange(anyString(), eq(HttpMethod.PUT), any(HttpEntity.class), eq(AccountsList.class)))
                 .thenReturn(mockResponseEntity);
 
         // Act
@@ -84,7 +83,7 @@ class AccountServiceTest {
         //Arrange
         when(urlBuilder.buildUrl("accounts")).thenReturn(mockUrl);
         when(headerConfig.constructHeader()).thenReturn(mockHeaders);
-        when(restTemplate.exchange(eq(mockUrl), eq(HttpMethod.GET), any(HttpEntity.class), eq(AccountsList.class)))
+        when(restTemplate.exchange(anyString(), eq(HttpMethod.GET), any(HttpEntity.class), eq(AccountsList.class)))
                 .thenReturn(mockResponseEntity);
 
         //Act
