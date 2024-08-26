@@ -30,7 +30,7 @@ class RoundUpControllerTest {
     private RoundUpService roundUpService;
 
     @Test
-    public void testSaveWeeklyRoundUp_Success() throws Exception {
+    public void testSaveWeeklyRoundUp() throws Exception {
         //Arrange
         Account mockAccount = new Account("accUid", "type", "category", "GBP", "now", "name");
         SavingsGoalTransferResponse mockResponse = new SavingsGoalTransferResponse("transferUid", true);

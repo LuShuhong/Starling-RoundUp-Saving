@@ -65,11 +65,11 @@ public class TransactionService {
                 .sum();
     }
 
-    private boolean isOutgoingTransaction(FeedItem transaction) {
+    boolean isOutgoingTransaction(FeedItem transaction) {
         return transaction.direction().equals(TransactionDirection.OUT.name());
     }
 
-    private int calculateRoundUp(FeedItem transaction) {
+    int calculateRoundUp(FeedItem transaction) {
         int minorUnits = transaction.amount().minorUnits();
         int remainder = minorUnits % 100;
         return (remainder == 0) ? 0 : 100 - remainder;

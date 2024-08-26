@@ -66,6 +66,20 @@ class AccountServiceTest {
     }
 
     @Test
+    void testGetDefaultAccount_NullBody(){
+        //Arrange and Act
+        when(urlBuilder.buildUrl("accounts")).thenReturn(mockUrl);
+        when(headerConfig.constructHeader()).thenReturn(mockHeaders);
+        ResponseEntity<AccountsList> mockResponseEntity = ResponseEntity.ok(null);
+
+        when(restTemplate.exchange(eq(mockUrl), eq(HttpMethod.GET), any(HttpEntity.class), eq(AccountsList.class)))
+                .thenReturn(mockResponseEntity);
+
+        // Act
+        assertThrows(NullPointerException.class, () -> accountService.getDefaultAccount());
+    }
+
+    @Test
     void testGetAccountsList() {
         //Arrange
         when(urlBuilder.buildUrl("accounts")).thenReturn(mockUrl);
@@ -79,19 +93,5 @@ class AccountServiceTest {
         //Assert
         assertNotNull(response);
         assertEquals(mockAccountsList, response.getBody());
-    }
-
-    @Test
-    void testGetAccountsList_Failure(){
-        //Arrange and Act
-        when(urlBuilder.buildUrl("accounts")).thenReturn(mockUrl);
-        when(headerConfig.constructHeader()).thenReturn(mockHeaders);
-        ResponseEntity<AccountsList> mockResponseEntity = ResponseEntity.ok(null);
-
-        when(restTemplate.exchange(eq(mockUrl), eq(HttpMethod.GET), any(HttpEntity.class), eq(AccountsList.class)))
-                .thenReturn(mockResponseEntity);
-
-        // Act
-        assertThrows(NullPointerException.class, () -> accountService.getDefaultAccount());
     }
 }
