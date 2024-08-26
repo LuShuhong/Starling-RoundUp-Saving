@@ -18,7 +18,6 @@ class HeaderConfigTest {
 
     @Test
     public void testConstructHeader() {
-
         HttpHeaders headers = headerConfig.constructHeader();
         assertEquals(MediaType.APPLICATION_JSON, headers.getContentType());
         assertEquals("Bearer mockAccessToken", headers.getFirst("Authorization"));
