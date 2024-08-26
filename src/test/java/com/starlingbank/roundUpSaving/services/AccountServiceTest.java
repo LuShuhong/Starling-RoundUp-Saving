@@ -66,7 +66,7 @@ class AccountServiceTest {
     }
 
     @Test
-    void testGetAccountsList_Success() {
+    void testGetAccountsList() {
         //Arrange
         when(urlBuilder.buildUrl("accounts")).thenReturn(mockUrl);
         when(headerConfig.constructHeader()).thenReturn(mockHeaders);
@@ -82,15 +82,16 @@ class AccountServiceTest {
     }
 
     @Test
-    void testGetAccountsList_Failure() {
+    void testGetAccountsList_Failure(){
         //Arrange and Act
         when(urlBuilder.buildUrl("accounts")).thenReturn(mockUrl);
         when(headerConfig.constructHeader()).thenReturn(mockHeaders);
-        when(restTemplate.exchange(eq(mockUrl), eq(HttpMethod.GET), any(HttpEntity.class), eq(AccountsList.class)))
-                .thenThrow(new RestClientException("Service unavailable"));
+        ResponseEntity<AccountsList> mockResponseEntity = ResponseEntity.ok(null);
 
-        //Assert
-        assertThrows(RestClientException.class, () -> accountService.getAccountsList());
-        verify(restTemplate, times(1)).exchange(eq(mockUrl), eq(HttpMethod.GET), any(HttpEntity.class), eq(AccountsList.class));
+        when(restTemplate.exchange(eq(mockUrl), eq(HttpMethod.GET), any(HttpEntity.class), eq(AccountsList.class)))
+                .thenReturn(mockResponseEntity);
+
+        // Act
+        assertThrows(NullPointerException.class, () -> accountService.getDefaultAccount());
     }
 }
