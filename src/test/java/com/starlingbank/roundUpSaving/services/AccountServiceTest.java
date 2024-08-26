@@ -32,19 +32,10 @@ class AccountServiceTest {
     @InjectMocks
     private AccountService accountService;
 
-    @Mock
     private Account mockAccount;
-
-    @Mock
     private AccountsList mockAccountsList;
-
-    @Mock
     private ResponseEntity<AccountsList> mockResponseEntity;
-
-    @Mock
     private String mockUrl;
-
-    @Mock
     private HttpHeaders mockHeaders;
 
     @BeforeEach
